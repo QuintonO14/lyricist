@@ -1,4 +1,4 @@
-const Current = ({currentSong, show, returnToTrack, lyrics, showLyrics}) => {
+const Current = ({currentSong, loading, show, returnToTrack, lyrics, showLyrics}) => {
     const trackId = currentSong ? currentSong.item.external_ids.isrc : null
     return (
             <div className="flex flex-col items-center relative bg-black text-white mt-1 w-full md:w-1/2 max-h-96 overflow-y-auto w-auto mx-auto px-4 border
@@ -19,7 +19,9 @@ const Current = ({currentSong, show, returnToTrack, lyrics, showLyrics}) => {
                 className="absolute top-0 left-0 p-2 border rounded-md hover:bg-white hover:text-black
                 active:bg-white active:text-black m-1" 
                 onClick={returnToTrack}>←</button>
-                <p className="whitespace-pre-wrap mt-4 text-center">{lyrics}</p>
+                {loading === false ? (
+                     <p className="whitespace-pre-wrap mt-4 text-center">{lyrics}</p>
+                ) : <svg className="animate-spin rounded-full mx-auto h-32 w-32 border-b-2 border-gray-100"></svg>}
              </>
              )}
             </div>

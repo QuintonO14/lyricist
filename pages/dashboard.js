@@ -9,6 +9,7 @@ const Playlist = dynamic(() => import('../components/playlist'))
 const Dashboard = ({currentSong, session, playlists}) => {
     const [playlist, setPlaylist] = useState(playlists !== null ? playlists.items : playlists)
     const [currentlyPlaying, setPlaying] = useState(currentSong)
+    const [loading, setLoading] = useState(false)
     const [lyrics, setLyrics] = useState('')
     const [show, setShow] = useState(false)
     useEffect(() => {
@@ -43,6 +44,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
       }, [session]);
       
     const showLyrics = async (id) => {
+        setLoading(true)
         await axios.get(`https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.get?track_isrc=${id}&apikey=0ddd166bf424d4206c0307822ac666ed`).then((res) => {
             const newId = res.data.message.body.track.track_id
             axios.get(`https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${newId}&apikey=0ddd166bf424d4206c0307822ac666ed`).then((res) => {
@@ -53,6 +55,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
                 }
             })
         })
+        setLoading(false)
         setShow(true)
     }
 
@@ -60,7 +63,6 @@ const Dashboard = ({currentSong, session, playlists}) => {
         setShow(false)
         setLyrics('')
     }
-
 
     const top = () => {
         window.scroll({top:0,behavior:'smooth'}); 
@@ -84,7 +86,13 @@ const Dashboard = ({currentSong, session, playlists}) => {
         (
             <>
             <h1 className="text-center pt-4 mb-2 text-lg">Currently Playing:</h1>
-            <Current currentSong={currentlyPlaying} show={show} showLyrics={showLyrics} lyrics={lyrics} returnToTrack={returnToTrack} />
+            <Current 
+            currentSong={currentlyPlaying} 
+            loading={loading} 
+            show={show} 
+            showLyrics={showLyrics} 
+            lyrics={lyrics} 
+            returnToTrack={returnToTrack} />
             </>
         ) : null}
         <h1 className="text-center p-4 text-lg">Playlists:</h1>
@@ -92,13 +100,11 @@ const Dashboard = ({currentSong, session, playlists}) => {
                return (
                    <Playlist
                    key={list.id} 
-                   list={list} 
+                   list={list}
+                   showLyrics={showLyrics} 
                    session={session} />
                )
-           })) :
-            (
-            <p>Loading...</p>
-            )}
+           })) : <svg className="animate-spin rounded-full mx-auto h-32 w-32 border-b-2 border-gray-100"></svg>}
         <button                
             className="border-2 text-black border-black bg-white rounded-xl p-0.5 px-2 mt-4" 
             onClick={top}>⯅
