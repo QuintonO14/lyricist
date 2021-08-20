@@ -107,7 +107,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
            })) : <svg className="animate-spin rounded-full mx-auto h-32 w-32 border-b-2 border-gray-100"></svg>}
         <button                
             className="border-2 text-black border-black bg-white rounded-xl p-0.5 px-2 mt-4" 
-            onClick={top}>⯅
+            onClick={top}>↑
         </button>
        </div>
        

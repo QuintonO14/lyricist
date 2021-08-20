@@ -17,7 +17,7 @@ const List = ({tracks, top,showLyrics, setShow}) => {
         id="btn" 
         className="border-2 text-black border-black bg-white rounded-xl p-0.5 px-2" 
         onClick={top}>
-        ⯅
+        ↑
         </button>
         </ul>
     )
