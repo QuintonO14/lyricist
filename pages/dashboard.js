@@ -74,7 +74,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             <meta charSet="utf-8" />
             <title>Lyricist | Playlists</title>
-            <meta name="playlists" content="Playlist feed for users to get their lyrics. 
+            <meta name="description" content="Playlist feed for users to get their lyrics. 
             Includes currently playing song." />
             <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
          </Head>    

@@ -9,7 +9,8 @@ export default function Page({providers}) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta charSet="utf-8" />
         <title>Lyricist</title>
-        <meta name="signin" content="Lyricist is a place for the lyrics to all of your favorite songs
+        <meta name="application-name" content="Lyricist" />
+        <meta name="description" content="Lyricist is a place for the lyrics to all of your favorite songs
         in all of your favorite playlists!" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
        </Head> 
