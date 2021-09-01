@@ -7,6 +7,7 @@ const Current = dynamic(() => import('../components/current'))
 const Playlist = dynamic(() => import('../components/playlist'))
 
 const Dashboard = ({currentSong, session, playlists}) => {
+    console.log(playlists)
     const [playlist, setPlaylist] = useState(playlists !== null ? playlists.items : playlists)
     const [currentlyPlaying, setPlaying] = useState(currentSong)
     const [loading, setLoading] = useState(false)
@@ -82,33 +83,37 @@ const Dashboard = ({currentSong, session, playlists}) => {
         className="absolute right-0 m-1 border border-white p-1 rounded-sm 
         hover:bg-white hover:text-black active:bg-white active:text-black text-xs sm:text-lg" 
         onClick={signOut}>Logout</button>
-        {currentlyPlaying ? 
-        (
-            <>
-            <h1 className="text-center pt-4 mb-2 text-lg">Currently Playing:</h1>
-            <Current 
-            currentSong={currentlyPlaying} 
-            loading={loading} 
-            show={show} 
-            showLyrics={showLyrics} 
-            lyrics={lyrics} 
-            returnToTrack={returnToTrack} />
-            </>
-        ) : null}
-        <h1 className="text-center p-4 text-lg">Playlists:</h1>
-        {playlist !== null ? ( playlist.map((list) => {
-               return (
-                   <Playlist
-                   key={list.id} 
-                   list={list}
-                   showLyrics={showLyrics} 
-                   session={session} />
-               )
-           })) : <svg className="animate-spin rounded-full mx-auto h-32 w-32 border-b-2 border-gray-100"></svg>}
-        <button                
-            className="border-2 text-black border-black bg-white rounded-xl p-0.5 px-2 mt-4" 
-            onClick={top}>↑
-        </button>
+        {playlists.items > 1 ? (
+             <>
+             {currentlyPlaying ? 
+              (
+                  <>
+                  <h1 className="text-center pt-4 mb-2 text-lg">Currently Playing:</h1>
+                  <Current 
+                  currentSong={currentlyPlaying} 
+                  loading={loading} 
+                  show={show} 
+                  showLyrics={showLyrics} 
+                  lyrics={lyrics} 
+                  returnToTrack={returnToTrack} />
+                  </>
+              ) : null}
+              <h1 className="text-center p-4 text-lg">Playlists:</h1>
+              {playlist !== null ? ( playlist.map((list) => {
+                     return (
+                         <Playlist
+                         key={list.id} 
+                         list={list}
+                         showLyrics={showLyrics} 
+                         session={session} />
+                     )
+                 })) : <svg className="animate-spin rounded-full mx-auto h-32 w-32 border-b-2 border-gray-100"></svg>}
+              <button                
+                  className="border-2 text-black border-black bg-white rounded-xl p-0.5 px-2 mt-4" 
+                  onClick={top}>↑
+              </button>
+             </>
+        ) : <p className="w-1/2 mx-auto">No Playlists Found. Head to Spotify and start saving playlists!</p>}
        </div>
        
     )
