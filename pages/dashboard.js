@@ -7,8 +7,7 @@ const Current = dynamic(() => import('../components/current'))
 const Playlist = dynamic(() => import('../components/playlist'))
 
 const Dashboard = ({currentSong, session, playlists}) => {
-    console.log(playlists)
-    const [playlist, setPlaylist] = useState(playlists !== null ? playlists.items : playlists)
+    const [playlist, setPlaylist] = useState(playlists !== null ? playlists.items : null)
     const [currentlyPlaying, setPlaying] = useState(currentSong)
     const [loading, setLoading] = useState(false)
     const [lyrics, setLyrics] = useState('')
@@ -83,7 +82,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
         className="absolute right-0 m-1 border border-white p-1 rounded-sm 
         hover:bg-white hover:text-black active:bg-white active:text-black text-xs sm:text-lg" 
         onClick={signOut}>Logout</button>
-        {playlists.items > 1 ? (
+        {playlist != 0 ? (
              <>
              {currentlyPlaying ? 
               (
