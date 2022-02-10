@@ -1,12 +1,14 @@
 import { motion } from "framer-motion"
+import { TiArrowBack } from 'react-icons/ti'
 
 const Lyrics = ({returnToTracks, loading, lyrics}) => {
     return (
-        <>
-        <button
-        className="absolute top-0 left-0 p-2 border rounded-md hover:bg-white hover:text-black
-        active:bg-white active:text-black" 
-        onClick={returnToTracks}>←</button>
+        <div>
+             <button
+            className="absolute top-0 left-0 h-10 w-10 m-1 border border-primary rounded-xl bg-quarternary
+            hover:text-primary active:bg-quarternary flex justify-center items-center" 
+            onClick={returnToTracks}><TiArrowBack />
+            </button>
         {loading === false ? (
               <motion.p
               initial={{opacity: 0}}
@@ -16,7 +18,7 @@ const Lyrics = ({returnToTracks, loading, lyrics}) => {
               </motion.p>
         ) : <svg className="animate-spin rounded-full mx-auto h-32 w-32 border-b-2 border-gray-100"></svg>
         }
-        </>
+        </div>
     )
 }
 

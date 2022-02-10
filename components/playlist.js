@@ -24,15 +24,18 @@ const Playlist = ({list, session}) => {
 
     const showLyrics = async (id) => {
         setLoading(true)
-        await axios.get(`https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.get?track_isrc=${id}&apikey=0ddd166bf424d4206c0307822ac666ed`).then((res) => {
-            const newId = res.data.message.body.track.track_id
-            axios.get(`https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${newId}&apikey=0ddd166bf424d4206c0307822ac666ed`).then((res) => {
-                if(res.data.message.body.lyrics.lyrics_body) {
-                    setLyrics(res.data.message.body.lyrics.lyrics_body) 
-                } else {
-                    setLyrics(`Unfortunately these lyrics have been subjected to copyright laws and cannot be displayed. Please try another time or look somewhere else for the lyrics to this song.`)
-                }
-            })
+        await axios('/api/lyrics', {
+            method: 'GET',
+            params: {
+                id: id
+            }
+        }).then((res) => {
+            if(res.data) {
+                setLyrics(res.data)
+            } else {
+                setLyrics(`Unfortunately, the lyrics for this song have been subjected
+                 to copyright by its creator and cannot be displayed at this time`)
+            }
         })
         setLoading(false)
         setShow(false)
@@ -44,17 +47,15 @@ const Playlist = ({list, session}) => {
     }
 
     const top = () => {
-            document.getElementById(list.id).scroll({top:0,behavior:'smooth'}); 
+        document.getElementById(list.id).scroll({top:0,behavior:'smooth'}); 
     }
-    
- 
 
     return (
         <div
         id={list.id}
-        className="relative bg-black text-white w-full lg:w-1/2 max-h-96 overflow-y-auto w-auto mx-auto px-4 border
-         border-white rounded-md p-8 scrollbar scrollbar-thumb-rounded scrollbar-thumb-gray-600
-        scrollbar-track-rounded scrollbar-thin scrollbar-track-gray-200">
+        className="relative bg-tertiary text-primary w-11/12 lg:w-2/3 max-h-96 overflow-y-auto w-auto mx-auto px-4 border-2
+         border-quarternary rounded-md p-8 scrollbar scrollbar-thumb-rounded scrollbar-thumb-secondary
+        scrollbar-track-rounded scrollbar-thin scrollbar-track-quarternary my-2">
             {showingTracks === true && loading === false && tracks ? 
                <List setShow={setShow} showLyrics={showLyrics} tracks={tracks} top={top} />
              : showingTracks === null ? 

@@ -1,14 +1,22 @@
 import { motion } from "framer-motion"
-const Track = ({track, showLyrics}) => {
+const Track = ({i, track, showLyrics}) => {
     const id = track.track.external_ids.isrc
     return (
-        <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 1}}>
-            <li className="cursor-pointer border border-black rounded-md text-black list-none bg-white
-             hover:bg-green-200 active:bg-green-200 p-2 my-2 text-xs sm:text-base"
+        <div>
+            <motion.li 
+             initial="initial"
+             animate="animate"
+             variants={{
+                 initial: { opacity: 0},
+                 animate: { opacity: 1}
+             }}
+             transition={{ duration: 0.3, delay: i * 0.05}}
+            className="cursor-pointer border border-quarternary rounded-md text-quarternary list-none bg-primary
+             hover:bg-quarternary hover:text-primary hover:border-primary p-2 my-2 text-md"
              onClick={() => showLyrics(id)}
              >{track.track.name} by {track.track.artists[0].name}
-             </li>
-        </motion.div>
+             </motion.li>
+        </div>
     )
 }
 

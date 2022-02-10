@@ -7,10 +7,11 @@ const Cover = ({list, getTracks}) => {
         transition={{duration: 1}}
         className="flex flex-col items-center mx-auto">
         <p className="mb-1">{list.name}</p>
-        <img className="border-4 border-white" height={200} width={200} src={list.images[0].url} alt="playlist_image" />
+        <img className="border-4 border-quarternary" height={200} width={200} src={list.images[0].url} alt="playlist_image" />
         <p className="mt-1">Made By: {list.owner.display_name}</p>
         <button
-        className="border-2 border-white rounded-md p-1 mt-2 hover:text-black hover:bg-white"
+        className="border-2 border-quarternary text-quarternary bg-primary hover:bg-quarternary hover:text-primary
+         rounded-md p-2 mt-2 hover:text-primary hover:bg-quarternary hover:border-primary"
         onClick={() => getTracks(list.id)}>See Tracks</button>
         </motion.div>
     )

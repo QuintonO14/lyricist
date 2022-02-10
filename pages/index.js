@@ -3,8 +3,7 @@ import Head from 'next/head'
 
 export default function Page({providers}) {
   return (
-   <div className="w-full sm:w-1/3 text-black min-h-screen flex flex-col mx-auto border
-    flex items-center justify-center rounded-md border-black">
+   <div className="flex justify-center items-center h-screen">
        <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta charSet="utf-8" />
@@ -14,15 +13,20 @@ export default function Page({providers}) {
         in all of your favorite playlists!" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
        </Head> 
+      <div className="w-full sm:w-3/4 text-primary h-2/3 mx-auto border rounded-md border-black 
+       bg-tertiary text-center flex flex-col justify-evenly">
+      <h1 className="text-4xl text-quarternary">Welcome to Lyricist!</h1>
      {Object.values(providers).map(provider => (
         <div key={provider.name}>
           <button
-           className="border border-black bg-white rounded-sm p-4 px-4 mx-autos hover:bg-gray-100 active:bg-gray-100"
+           className="transform border-b-2 border-primary bg-quarternary rounded-sm p-4 px-4 mx-autos text-xl
+           hover:translate-y-1 hover:border-secondary font-bold"
            onClick={() => signIn(provider.id)}>
             Sign In With {provider.name}
           </button>
         </div>
       ))}
+      </div>
   </div>
   )
 }

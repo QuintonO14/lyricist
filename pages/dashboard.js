@@ -3,6 +3,7 @@ import { getSession, signOut } from "next-auth/client"
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useState, useEffect } from "react"
+import { ImArrowUp } from "react-icons/im"
 const Current = dynamic(() => import('../components/current'))
 const Playlist = dynamic(() => import('../components/playlist'))
 
@@ -12,6 +13,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
     const [loading, setLoading] = useState(false)
     const [lyrics, setLyrics] = useState('')
     const [show, setShow] = useState(false)
+
     useEffect(() => {
         if(session.error) {
             const tokenRedirect = async() => {
@@ -45,15 +47,18 @@ const Dashboard = ({currentSong, session, playlists}) => {
       
     const showLyrics = async (id) => {
         setLoading(true)
-        await axios.get(`https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.get?track_isrc=${id}&apikey=0ddd166bf424d4206c0307822ac666ed`).then((res) => {
-            const newId = res.data.message.body.track.track_id
-            axios.get(`https://cors-access-allow.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${newId}&apikey=0ddd166bf424d4206c0307822ac666ed`).then((res) => {
-                if(res.data.message.body.lyrics.lyrics_body) {
-                    setLyrics(res.data.message.body.lyrics.lyrics_body) 
-                } else {
-                    setLyrics(`Unfortunately these lyrics have been subjected to copyright laws and cannot be displayed. Please try again another time or look elsewhere for the lyrics to this song.`)
-                }
-            })
+        await axios('/api/lyrics', {
+            method: 'GET',
+            params: {
+                id: id
+            }
+        }).then((res) => {
+            if(res.data) {
+                setLyrics(res.data)
+            } else {
+                setLyrics(`Unfortunately, the lyrics for this song have been subjected
+                 to copyright by its creator and cannot be displayed at this time`)
+            }
         })
         setLoading(false)
         setShow(true)
@@ -69,7 +74,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
     }
 
     return (
-        <div id="playlist" className="bg-black text-white text-center">
+        <div id="playlist" className="text-quarternary text-center flex flex-col">
           <Head>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             <meta charSet="utf-8" />
@@ -78,16 +83,18 @@ const Dashboard = ({currentSong, session, playlists}) => {
             Includes currently playing song." />
             <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
          </Head>    
-        <button 
-        className="absolute right-0 m-1 border border-white p-1 rounded-sm 
-        hover:bg-white hover:text-black active:bg-white active:text-black text-xs sm:text-lg" 
-        onClick={signOut}>Logout</button>
-        {playlist != 0 ? (
-             <>
-             {currentlyPlaying ? 
-              (
-                  <>
-                  <h1 className="text-center pt-4 mb-2 text-lg">Currently Playing:</h1>
+        <div className="w-full bg-primary flex justify-between border-b-2 border-tertiary">
+            <img className="h-8 my-2 ml-1" src="/lyricist.png"  alt="logo" />
+            <button 
+            className="float-right m-1 border border-white p-1 rounded-sm bg-secondary 
+            hover:bg-quarternary hover:text-primary active:bg-quarternary active:text-primary text-lg sm:text-lg" 
+            onClick={signOut}>Logout
+            </button>
+        </div>
+             <div>
+             {currentlyPlaying &&(
+                <div>
+                  <h1 className="text-center pt-4 mb-2 text-xl">Currently Playing:</h1>
                   <Current 
                   currentSong={currentlyPlaying} 
                   loading={loading} 
@@ -95,10 +102,10 @@ const Dashboard = ({currentSong, session, playlists}) => {
                   showLyrics={showLyrics} 
                   lyrics={lyrics} 
                   returnToTrack={returnToTrack} />
-                  </>
-              ) : null}
-              <h1 className="text-center p-4 text-lg">Playlists:</h1>
-              {playlist !== null ? ( playlist.map((list) => {
+                </div>
+              )}
+              <h1 className="text-center p-4 text-xl">Playlists:</h1>
+              {playlist.length && ( playlist.map((list) => {
                      return (
                          <Playlist
                          key={list.id} 
@@ -106,13 +113,16 @@ const Dashboard = ({currentSong, session, playlists}) => {
                          showLyrics={showLyrics} 
                          session={session} />
                      )
-                 })) : <svg className="animate-spin rounded-full mx-auto h-32 w-32 border-b-2 border-gray-100"></svg>}
+                 }))}  
               <button                
-                  className="border-2 text-black border-black bg-white rounded-xl p-0.5 px-2 mt-4" 
-                  onClick={top}>↑
+                  className="border-2 text-primary border-black bg-quarternary rounded-xl p-2 mt-4" 
+                  onClick={top}>
+                  <ImArrowUp />
               </button>
-             </>
-        ) : <p className="w-1/2 mx-auto">No Playlists Found. Head to Spotify and start saving playlists!</p>}
+             </div>
+            {!playlist && (
+             <p className="w-1/2 mx-auto">No Playlists Found. Head to Spotify and start saving playlists!</p>
+            )}
        </div>
        
     )
