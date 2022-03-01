@@ -45,7 +45,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
         }
       }, [session]);
       
-    const showLyrics = async (id) => {
+    const showLyrics = async (id: number) => {
         setLoading(true)
         await axios('/api/lyrics', {
             method: 'GET',
@@ -88,7 +88,7 @@ const Dashboard = ({currentSong, session, playlists}) => {
             <button 
             className="float-right m-1 border border-white p-1 rounded-sm bg-secondary 
             hover:bg-quarternary hover:text-primary active:bg-quarternary active:text-primary text-lg sm:text-lg" 
-            onClick={signOut}>Logout
+            onClick={() => signOut()}>Logout
             </button>
         </div>
              <div>
@@ -110,7 +110,6 @@ const Dashboard = ({currentSong, session, playlists}) => {
                          <Playlist
                          key={list.id} 
                          list={list}
-                         showLyrics={showLyrics} 
                          session={session} />
                      )
                  }))}  
