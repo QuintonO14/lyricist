@@ -10,7 +10,6 @@ interface Providers {
 }
 
 export default function Page({providers}) {
-  console.log(providers)
   return (
    <div className="flex justify-center items-center h-screen">
        <Head>
@@ -25,8 +24,9 @@ export default function Page({providers}) {
       <div className="w-full sm:w-3/4 text-primary h-2/3 mx-auto border rounded-md border-black 
        bg-tertiary text-center flex flex-col justify-evenly">
       <h1 className="text-4xl text-quarternary">Welcome to Lyricist!</h1>
-     {Object.values(providers).map((provider: Providers, i) => (
-        <div key={i}>
+     {Object.values(providers).map((provider: Providers, i) => ( 
+       <div key={i}>
+         {console.log(provider)}
           <button
            className="transform border-b-2 border-primary bg-quarternary rounded-sm p-4 px-4 mx-autos text-xl
            hover:translate-y-1 hover:border-secondary font-bold"
@@ -42,7 +42,7 @@ export default function Page({providers}) {
 
 export async function getServerSideProps (context) {
   const session = await getSession(context)
-  if(session) {
+  if(session != null) {
     return {
       redirect: {
         destination: '/dashboard',
