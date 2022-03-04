@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import axios from "axios"
 import dynamic from 'next/dynamic'
 const Cover = dynamic(() => import('./cover'))
@@ -10,6 +10,7 @@ const Playlist = ({list, session}) => {
     const [showingTracks, setShow] = useState(null)
     const [lyrics, setLyrics] = useState('')
     const [loading, setLoading] = useState(false)
+    const playlist = useRef(null)
 
     const getTracks = async (id) => {
         setShow(true)
@@ -47,12 +48,12 @@ const Playlist = ({list, session}) => {
     }
 
     const top = () => {
-        document.getElementById(list.id).scroll({top:0,behavior:'smooth'}); 
+        playlist.current?.scroll({top:0,behavior:'smooth'}); 
     }
 
     return (
         <div
-        id={list.id}
+        ref={playlist}
         className="relative bg-tertiary text-primary w-11/12 lg:w-2/3 max-h-96 overflow-y-auto w-auto mx-auto px-4 border-2
          border-quarternary rounded-md p-8 scrollbar scrollbar-thumb-rounded scrollbar-thumb-secondary
         scrollbar-track-rounded scrollbar-thin scrollbar-track-quarternary my-2">
